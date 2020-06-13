@@ -3,6 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 
 const { authSocketIo } = require('./middlewares/auth');
+const routes = require('./routes');
 
 const origins = ['http://localhost:3000'];
 
@@ -28,10 +29,6 @@ const io = require('socket.io')(server, {
     serveClient: false,
 });
 
-// app.get('/', (req, res) => {
-//     return res.status(200).json({ message: 'Hello' });
-// });
-
 // io.use((socket, next) => {
 //     const authToken = socket.request.headers['authorization'];
     
@@ -48,6 +45,9 @@ io.on('connection', (socket) => {
         console.log(data);
     });
 });
+
+app.use(express.json());
+app.use('/api', routes);
 
 server.listen(3001);
 
